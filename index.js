@@ -1,6 +1,6 @@
 require("dotenv").config();
 const DB = require("./config/index")
-DB(() => {
+DB((error) => {
   if(error) return error
 })
 
@@ -25,7 +25,7 @@ app.get("/get-status", async (req, res) => {
 
   try {
     const readDb = await User.findOne({})
-    if(!readDb) return res.status(400).send({ message: "Db Error"})
+    // if(!readDb) return res.status(400).send({ message: "Db Error"})
 
     res.status(200).send(setDb)
   } catch (error) {
@@ -42,7 +42,7 @@ app.post("/post-status", async (req, res) => {
     const setDb = await User.create({
       paymentStatus: value
     })
-    if(!setDb) return res.status(400).send({ message: "Error saving Data"})
+    // if(!setDb) return res.status(400).send({ message: "Error saving Data"})
 
     res.status(200).send(setDb)
   } catch(error) {

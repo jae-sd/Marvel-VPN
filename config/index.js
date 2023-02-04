@@ -11,7 +11,7 @@ const connectDb = async (cb) => {
     ).then(res => {
         return res
     }).catch(error => {
-        cb(error)
+       return cb(error)
     })
 }
 
