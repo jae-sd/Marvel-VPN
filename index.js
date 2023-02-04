@@ -1,6 +1,8 @@
 require("dotenv").config();
 const DB = require("./config/index")
-DB()
+DB(() => {
+  if(error) return error
+})
 
 const express = require("express")
 const User = require("./model/index")
