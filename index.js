@@ -19,62 +19,64 @@ app.get("/", (req, res) => {
 })
 
 
-//Client route to get status of Marvel's payment
-app.get("/get-status", async (req, res) => {
+app.post("/add-users", async (req, res) => {
+  const { name, value } = req.body;
 
   try {
-    const readDb = await User.find()
-    if (!readDb) return res.status(400).send({ message: "Db Error" })
-
-    res.status(200).send(readDb)
-  } catch (error) {
-    res.status(400).send(error)
-  }
-
-
-})
-
-//Admin route to post the status of Marvel's payment
-app.post("/post-status", async (req, res) => {
-  const { value } = req.body
-
-
-  try {
-    const exists = await User.find()
- 
-    if (exists.length !== 0) {
-      const setData = await User.updateOne({
-        _id: exists[0]._id
-      }, {
+    const newUser = await User.updateOne({
+      name
+    }, {
+      $set: {
+        name,
         paymentStatus: value
-      })
-      return res.status(200).send(setData)
-    }
-
-   //this is an upsert operation
-    const setData = await User.create({
-      paymentStatus: value
+      }
+    }, {
+      upsert: true
     })
 
-    return res.status(200).send(setData)
+    res.status(200).send(newUser)
   } catch (error) {
-    res.status(400).send(error)
+    res.status(200).send(error)
   }
+
 
 })
 
 
+app.post("/update-status", async (req, res) => {
+  const { name, value } = req.body;
 
-app.delete("/delete", async (req, res) => {
-  const { id } = req.body;
+  const exists = await User.findOne({ name });
+  if(!exists) return res.status(400).send({ message: "User does not exist"})
 
   try {
-    const deleteKey = await User.deleteOne({
-      _id: id
+    const updatedUser = await User.updateOne({
+      name
+    }, {
+      $set: {
+        paymentStatus: value
+      }
     })
+  
+    res.status(200).send(updatedUser)
+  } catch (error) {
+    res.status(400).send(error)
+  }
+})
 
-    if (!deleteKey) return res.status(400).send({ message: "DB Delete Error" })
-    res.status(200).send(deleteKey)
+
+
+app.delete("/delete-user", async (req, res) => {
+  const { name } = req.body;
+
+  const exists = await User.findOne({ name })
+  if(!exists) return res.status(400).send({ message: "User does not exist"})
+  
+  try {
+
+    const deleteUser = await User.deleteOne({ name })
+    
+    res.status(200).send(deleteUser)
   } catch (error) {
     res.status(400).send(error)
   }

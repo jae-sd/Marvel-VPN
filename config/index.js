@@ -5,7 +5,7 @@ let mongodbAtlas = `mongodb+srv://jae321:${process.env.DB_PASSWORD}@cluster0.gwv
 let localConnection = "mongodb://localhost:27017/marvel";
 
 const connectDb = async (cb) => {
-    
+
     mongoose.set('strictQuery', true);
     mongoose.connect(mongodbAtlas,
         {
