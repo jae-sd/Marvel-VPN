@@ -35,7 +35,7 @@ app.get("/get-one", async (req, res) => {
     const getOne = await User.findOne({ name })
     if (!getOne) return res.send({ message: "User does not exist" })
 
-    res.status(200).send(getOne)
+    res.status(200).send(getOne.paymentStatus)
   } catch (error) {
     res.status(400).send(error)
   }
