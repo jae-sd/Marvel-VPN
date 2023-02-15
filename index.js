@@ -29,7 +29,7 @@ app.get("/get-all", async (req, res) => {
   }
 })
 
-app.get("/get-one", async (req, res) => {
+app.post("/get-one", async (req, res) => {
   try {
     const { name } = req.body;
     console.log(name)
