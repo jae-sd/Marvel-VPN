@@ -32,7 +32,9 @@ app.get("/get-all", async (req, res) => {
 app.get("/get-one", async (req, res) => {
   try {
     const { name } = req.body;
+    console.log(name)
     const getOne = await User.findOne({ name })
+    console.log(getOne)
     // if (!getOne) return res.send({ message: "User does not exist" })
 
     res.status(200).send(getOne.paymentStatus)
